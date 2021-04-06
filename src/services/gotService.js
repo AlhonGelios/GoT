@@ -16,7 +16,7 @@ export default class GotService {
 
     async getAllCharacters() {
         const res = await this.getResource('/characters?page=5&pageSize=10');
-        return res.map(this._transformCharacter);
+        return res.map(this._transformCharacter.bind(this));
     }
 
     async getCharacter(id) {
@@ -40,13 +40,19 @@ export default class GotService {
         return this.getResource(`/books/${id}`);
     }
 
+    setChar = (date) => {
+        if (date) {
+            return date
+        } else return 'no date'
+    }
+
     _transformCharacter(char) {
         return {
-            name: char.name,
-            gender: char.gender,
-            born: char.born,
-            died: char.died,
-            culture: char.culture
+            name: this.setChar(char.name),
+            gender: this.setChar(char.gender),
+            born: this.setChar(char.born),
+            died: this.setChar(char.died),
+            culture: this.setChar(char.culture)
         }
     }
 
